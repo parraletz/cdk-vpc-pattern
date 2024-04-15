@@ -13,7 +13,15 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/parraletz/cdk-vpc-pattern.git',
   docgenFilePath: 'docs',
   readme: { filename: 'docs/README.md' },
-  
+
+  publishToPypi: {
+    distName: 'cdk-vpc-pattern',
+    module: 'cdk_vpc_pattern',
+  },
+
+  publishToGo: {
+    moduleName: 'github.com/parraletz/cdk-vpc-pattern',
+  },
 
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
