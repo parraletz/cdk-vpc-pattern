@@ -2,7 +2,7 @@ import { awscdk } from 'projen'
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Alex Parra',
   authorAddress: 'parraletz@gmail.com',
-  cdkVersion: '2.137.0',
+  cdkVersion: '2.133.0',
   constructsVersion: '10.3.0',
   defaultReleaseBranch: 'main',
   docgen: true,
