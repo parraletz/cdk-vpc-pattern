@@ -13,7 +13,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   repositoryUrl: 'https://github.com/parraletz/cdk-vpc-pattern.git',
   docgenFilePath: 'docs',
   readme: { filename: 'docs/README.md' },
-  npmProvenance: false,
+  //npmProvenance: false,
 
   publishToPypi: {
     distName: 'cdk-vpc-pattern',
