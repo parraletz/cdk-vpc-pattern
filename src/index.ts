@@ -23,15 +23,13 @@ export class VpcPattern extends Construct {
 
     const azs = props?.azs || ['us-west-2a', 'us-west-2b', 'us-west-2c']
 
-    const vpc = new Vpc(this, props?.name || `${id}-vpc`, {
+    const vpc = new Vpc(this, props.name, {
       vpcName: props?.name,
-      cidr: props?.cidr ?? '10.0.0.0/16',
       maxAzs: props?.azs.length,
-      ipAddresses: ec2.IpAddresses.cidr(props?.cidr ?? '10.0.0.0/16'),
+      ipAddresses: ec2.IpAddresses.cidr(props.cidr),
       subnetConfiguration: [],
       createInternetGateway: false,
     })
-
     const internetGateway = new ec2.CfnInternetGateway(this, `${id}-igw`, {})
 
     new ec2.CfnVPCGatewayAttachment(this, `${id}-igw-attachment`, {
