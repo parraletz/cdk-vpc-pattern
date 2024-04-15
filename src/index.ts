@@ -38,24 +38,6 @@ export class VpcPattern extends Construct {
     })
 
     for (let i = 0; i < azs.length; i++) {
-      const privateSubnet = new ec2.PrivateSubnet(
-        this,
-        `PrivateSubnet-${azs[i]}`,
-        {
-          vpcId: vpc.vpcId,
-          availabilityZone: azs[i],
-          cidrBlock: props?.privateSubnets[i] ?? '',
-          mapPublicIpOnLaunch: false,
-        }
-      )
-      privateSubnet.addRoute('DefaultRoute', {
-        routerId: this.natGateways[i],
-        routerType: ec2.RouterType.NAT_GATEWAY,
-        destinationCidrBlock: '0.0.0.0/0',
-      })
-    }
-
-    for (let i = 0; i < azs.length; i++) {
       const publicSubnet = new ec2.PublicSubnet(
         this,
         `PublicSubnet-${azs[i]}`,
@@ -69,6 +51,32 @@ export class VpcPattern extends Construct {
       publicSubnet.addRoute('DefaultRoute', {
         routerId: internetGateway.ref,
         routerType: ec2.RouterType.GATEWAY,
+        destinationCidrBlock: '0.0.0.0/0',
+      })
+
+      const elasitcIP = new ec2.CfnEIP(this, `EIP-${azs[i]}`)
+
+      const natGateway = new ec2.CfnNatGateway(this, `Natgateway-${azs[i]}`, {
+        subnetId: publicSubnet.subnetId,
+        allocationId: elasitcIP.attrAllocationId,
+      })
+
+      this.natGateways.push(natGateway.ref as string)
+    }
+    for (let i = 0; i < azs.length; i++) {
+      const privateSubnet = new ec2.PrivateSubnet(
+        this,
+        `PrivateSubnet-${azs[i]}`,
+        {
+          vpcId: vpc.vpcId,
+          availabilityZone: azs[i],
+          cidrBlock: props?.privateSubnets[i] ?? '',
+          mapPublicIpOnLaunch: false,
+        }
+      )
+      privateSubnet.addRoute('DefaultRoute', {
+        routerId: this.natGateways[i],
+        routerType: ec2.RouterType.NAT_GATEWAY,
         destinationCidrBlock: '0.0.0.0/0',
       })
     }
