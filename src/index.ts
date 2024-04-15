@@ -58,6 +58,8 @@ export class VpcPattern extends Construct {
         destinationCidrBlock: '0.0.0.0/0',
       })
 
+
+
       const elasitcIP = new ec2.CfnEIP(this, `EIP-${azs[i]}`)
 
       const natGateway = new ec2.CfnNatGateway(this, `Natgateway-${azs[i]}`, {
