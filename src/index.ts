@@ -23,7 +23,7 @@ export class VpcPattern extends Construct {
 
     const azs = props?.azs || ['us-west-2a', 'us-west-2b', 'us-west-2c']
 
-    const vpc = new Vpc(this, props.name, {
+    const vpc = new Vpc(this, '', {
       vpcName: props?.name,
       maxAzs: props?.azs.length,
       ipAddresses: ec2.IpAddresses.cidr(props.cidr),
