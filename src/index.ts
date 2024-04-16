@@ -117,7 +117,6 @@ export class VpcPattern extends Construct {
         })
       }
     }
-
     this.vpcId = vpc
     this.privateSubnets = vpc.privateSubnets
     this.publicSubnets = vpc.publicSubnets
