@@ -11,6 +11,7 @@ export interface VpcProps {
   readonly privateSubnets: string[]
   readonly databaseSubnets?: string[]
   readonly enableKubernenetes?: boolean
+  readonly kubernetesClusterName?: string
 }
 
 export class VpcPattern extends Construct {
@@ -69,20 +70,16 @@ export class VpcPattern extends Construct {
 
       this.natGateways.push(natGateway.ref as string)
 
-      // Debug typeof publicSubnet
-      console.log(`Instance type: ${typeof publicSubnet}`)
+      Tags.of(publicSubnet).add('Name', `${props.name}-public-${azs[i]}`)
+      if (props?.enableKubernenetes) {
+        Tags.of(publicSubnet).add('kubernetes.io/role/elb', '1')
+        Tags.of(publicSubnet).add(
+          `kubernetes.io/cluster/${props.kubernetesClusterName}`,
+          'owned'
+        )
+      }
 
       this.publicSubnets.push(publicSubnet)
-    }
-
-    this.publicSubnets.forEach((subnet) => {
-      Tags.of(subnet).add('Name', `${props.name}-public`)
-    })
-
-    if (props?.enableKubernenetes) {
-      this.publicSubnets.forEach((subnet) => {
-        Tags.of(subnet).add('kubernetes.io/role/elb', '1')
-      })
     }
 
     for (let i = 0; i < azs.length; i++) {
@@ -101,28 +98,31 @@ export class VpcPattern extends Construct {
         routerType: ec2.RouterType.NAT_GATEWAY,
         destinationCidrBlock: '0.0.0.0/0',
       })
+      Tags.of(privateSubnet).add('Name', `${props.name}-private-${azs[i]}`)
 
+      if (props?.enableKubernenetes) {
+        Tags.of(privateSubnet).add('kubernetes.io/role/internal-elb', '1')
+        Tags.of(privateSubnet).add(
+          `kubernetes.io/cluster/${props.kubernetesClusterName}`,
+          'owned'
+        )
+      }
       this.privateSubnets.push(privateSubnet)
-    }
-
-    this.privateSubnets.forEach((subnet) => {
-      Tags.of(subnet).add('Name', `${props.name}-private`)
-    })
-
-    if (props?.enableKubernenetes) {
-      this.privateSubnets.forEach((subnet) => {
-        Tags.of(subnet).add('kubernetes.io/role/internal-elb', '1')
-      })
     }
 
     if (props?.databaseSubnets) {
       for (let i = 0; i < azs.length; i++) {
-        new ec2.PrivateSubnet(this, `DatabaseSubnet-${azs[i]}`, {
-          vpcId: vpc.vpcId,
-          availabilityZone: azs[i],
-          cidrBlock: props?.databaseSubnets[i] ?? '',
-          mapPublicIpOnLaunch: false,
-        })
+        const databaseSubnet = new ec2.PrivateSubnet(
+          this,
+          `DatabaseSubnet-${azs[i]}`,
+          {
+            vpcId: vpc.vpcId,
+            availabilityZone: azs[i],
+            cidrBlock: props?.databaseSubnets[i] ?? '',
+            mapPublicIpOnLaunch: false,
+          }
+        )
+        Tags.of(databaseSubnet).add('Name', `${props.name}-database-${azs[i]}`)
       }
     }
     this.vpcId = vpc

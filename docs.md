@@ -182,6 +182,7 @@ const vpcProps: VpcProps = { ... }
 | <code><a href="#cdk-vpc-pattern.VpcProps.property.publicSubnets">publicSubnets</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#cdk-vpc-pattern.VpcProps.property.databaseSubnets">databaseSubnets</a></code> | <code>string[]</code> | *No description.* |
 | <code><a href="#cdk-vpc-pattern.VpcProps.property.enableKubernenetes">enableKubernenetes</a></code> | <code>boolean</code> | *No description.* |
+| <code><a href="#cdk-vpc-pattern.VpcProps.property.kubernetesClusterName">kubernetesClusterName</a></code> | <code>string</code> | *No description.* |
 
 ---
 
@@ -252,6 +253,16 @@ public readonly enableKubernenetes: boolean;
 ```
 
 - *Type:* boolean
+
+---
+
+##### `kubernetesClusterName`<sup>Optional</sup> <a name="kubernetesClusterName" id="cdk-vpc-pattern.VpcProps.property.kubernetesClusterName"></a>
+
+```typescript
+public readonly kubernetesClusterName: string;
+```
+
+- *Type:* string
 
 ---
 
