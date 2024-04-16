@@ -1,3 +1,4 @@
+import { Tags } from 'aws-cdk-lib'
 import * as ec2 from 'aws-cdk-lib/aws-ec2'
 import { Vpc } from 'aws-cdk-lib/aws-ec2'
 import { Construct } from 'constructs'
@@ -9,6 +10,7 @@ export interface VpcProps {
   readonly publicSubnets: string[]
   readonly privateSubnets: string[]
   readonly databaseSubnets?: string[]
+  readonly enableKubernenetes?: boolean
 }
 
 export class VpcPattern extends Construct {
@@ -58,7 +60,15 @@ export class VpcPattern extends Construct {
         destinationCidrBlock: '0.0.0.0/0',
       })
 
+      this.publicSubnets.forEach((subnet) => {
+        Tags.of(subnet).add('Name', `${props.name}-public`)
+      })
 
+      if (props?.enableKubernenetes) {
+        this.publicSubnets.forEach((subnet) => {
+          Tags.of(subnet).add('kubernetes.io/role/elb', '1')
+        })
+      }
 
       const elasitcIP = new ec2.CfnEIP(this, `EIP-${azs[i]}`)
 
@@ -84,6 +94,16 @@ export class VpcPattern extends Construct {
         routerId: this.natGateways[i],
         routerType: ec2.RouterType.NAT_GATEWAY,
         destinationCidrBlock: '0.0.0.0/0',
+      })
+    }
+
+    this.privateSubnets.forEach((subnet) => {
+      Tags.of(subnet).add('Name', `${props.name}-private`)
+    })
+
+    if (props?.enableKubernenetes) {
+      this.privateSubnets.forEach((subnet) => {
+        Tags.of(subnet).add('kubernetes.io/role/internal-elb', '1')
       })
     }
 
