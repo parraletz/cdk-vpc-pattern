@@ -60,16 +60,6 @@ export class VpcPattern extends Construct {
         destinationCidrBlock: '0.0.0.0/0',
       })
 
-      this.publicSubnets.forEach((subnet) => {
-        Tags.of(subnet).add('Name', `${props.name}-public`)
-      })
-
-      if (props?.enableKubernenetes) {
-        this.publicSubnets.forEach((subnet) => {
-          Tags.of(subnet).add('kubernetes.io/role/elb', '1')
-        })
-      }
-
       const elasitcIP = new ec2.CfnEIP(this, `EIP-${azs[i]}`)
 
       const natGateway = new ec2.CfnNatGateway(this, `Natgateway-${azs[i]}`, {
@@ -78,7 +68,23 @@ export class VpcPattern extends Construct {
       })
 
       this.natGateways.push(natGateway.ref as string)
+
+      // Debug typeof publicSubnet
+      console.log(`Instance type: ${typeof publicSubnet}`)
+
+      this.publicSubnets.push(publicSubnet)
     }
+
+    this.publicSubnets.forEach((subnet) => {
+      Tags.of(subnet).add('Name', `${props.name}-public`)
+    })
+
+    if (props?.enableKubernenetes) {
+      this.publicSubnets.forEach((subnet) => {
+        Tags.of(subnet).add('kubernetes.io/role/elb', '1')
+      })
+    }
+
     for (let i = 0; i < azs.length; i++) {
       const privateSubnet = new ec2.PrivateSubnet(
         this,
@@ -95,6 +101,8 @@ export class VpcPattern extends Construct {
         routerType: ec2.RouterType.NAT_GATEWAY,
         destinationCidrBlock: '0.0.0.0/0',
       })
+
+      this.privateSubnets.push(privateSubnet)
     }
 
     this.privateSubnets.forEach((subnet) => {
