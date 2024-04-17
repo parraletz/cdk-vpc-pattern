@@ -125,7 +125,7 @@ export class VpcPattern extends Construct {
           }
         )
         Tags.of(databaseSubnet).add('Name', `${props.name}-database-${azs[i]}`)
-        Tags.of(databaseSubnet).add('Tier', 'Database')
+        Tags.of(databaseSubnet).add('Tier', 'Private')
       }
     }
     this.vpcId = vpc
