@@ -71,6 +71,7 @@ export class VpcPattern extends Construct {
       this.natGateways.push(natGateway.ref as string)
 
       Tags.of(publicSubnet).add('Name', `${props.name}-public-${azs[i]}`)
+      Tags.of(publicSubnet).add('Tier', 'Public')
       if (props?.enableKubernenetes) {
         Tags.of(publicSubnet).add('kubernetes.io/role/elb', '1')
         Tags.of(publicSubnet).add(
@@ -99,6 +100,7 @@ export class VpcPattern extends Construct {
         destinationCidrBlock: '0.0.0.0/0',
       })
       Tags.of(privateSubnet).add('Name', `${props.name}-private-${azs[i]}`)
+      Tags.of(privateSubnet).add('Tier', 'Private')
 
       if (props?.enableKubernenetes) {
         Tags.of(privateSubnet).add('kubernetes.io/role/internal-elb', '1')
@@ -123,6 +125,7 @@ export class VpcPattern extends Construct {
           }
         )
         Tags.of(databaseSubnet).add('Name', `${props.name}-database-${azs[i]}`)
+        Tags.of(databaseSubnet).add('Tier', 'Database')
       }
     }
     this.vpcId = vpc
