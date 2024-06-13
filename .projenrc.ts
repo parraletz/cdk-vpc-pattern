@@ -40,6 +40,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     javaPackage: 'com.github.cloudscouts.cdkvpcpattern',
   },
 
+  // defaultTask: undefined,  /* The default task to execute. */
+
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
