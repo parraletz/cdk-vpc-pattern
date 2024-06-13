@@ -1,5 +1,6 @@
 {
-  "name": "cdk-vpc-pattern",
+  "name": "@cloudscouts/cdk-vpc-pattern",
+  "description": "A CDK pattern to create a VPC with public and private subnets",
   "repository": {
     "type": "git",
     "url": "https://github.com/parraletz/cdk-vpc-pattern.git"
@@ -15,6 +16,7 @@
     "eject": "npx projen eject",
     "package": "npx projen package",
     "package-all": "npx projen package-all",
+    "package:dotnet": "npx projen package:dotnet",
     "package:go": "npx projen package:go",
     "package:js": "npx projen package:js",
     "package:python": "npx projen package:python",
@@ -42,13 +44,13 @@
     "jest": "^29.7.0",
     "jest-junit": "^15",
     "jsii": "~5.4.0",
-    "jsii-diff": "^1.97.0",
-    "jsii-docgen": "^10.4.1",
-    "jsii-pacmak": "^1.97.0",
+    "jsii-diff": "^1.99.0",
+    "jsii-docgen": "^10.4.14",
+    "jsii-pacmak": "^1.99.0",
     "jsii-rosetta": "~5.4.0",
-    "projen": "^0.81.0",
+    "projen": "^0.82.6",
     "standard-version": "^9",
-    "ts-jest": "^29.1.2",
+    "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
@@ -61,11 +63,15 @@
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.0.11",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.0",
   "jest": {
+    "coverageProvider": "v8",
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/(test|src)/**/*(*.)@(spec|test).ts?(x)"
+      "<rootDir>/@(test|src)/**/*(*.)@(spec|test).ts?(x)"
     ],
     "clearMocks": true,
     "collectCoverage": true,
@@ -112,6 +118,10 @@
       "python": {
         "distName": "cdk-vpc-pattern",
         "module": "cdk_vpc_pattern"
+      },
+      "dotnet": {
+        "namespace": "CloudScouts.CdkVpcPattern",
+        "packageId": "CloudScoutsCdkVpcPattern"
       },
       "go": {
         "moduleName": "github.com/parraletz/cdk-vpc-pattern"

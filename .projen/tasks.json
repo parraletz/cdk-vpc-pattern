@@ -105,7 +105,7 @@
       "description": "Generate API.md from .jsii manifest",
       "steps": [
         {
-          "exec": "jsii-docgen -o docs"
+          "exec": "jsii-docgen -o docs/API.md"
         }
       ]
     },
@@ -159,7 +159,19 @@
           "spawn": "package:python"
         },
         {
+          "spawn": "package:dotnet"
+        },
+        {
           "spawn": "package:go"
+        }
+      ]
+    },
+    "package:dotnet": {
+      "name": "package:dotnet",
+      "description": "Create dotnet language bindings",
+      "steps": [
+        {
+          "exec": "jsii-pacmak -v --target dotnet"
         }
       ]
     },
@@ -227,7 +239,11 @@
           "spawn": "unbump"
         },
         {
+<<<<<<< HEAD
           "exec": "git diff ./ --ignore-space-at-eol --exit-code"
+=======
+          "exec": "git diff --ignore-space-at-eol --exit-code | tee"
+>>>>>>> 40a5fb9 (feat: Added maven package)
         }
       ]
     },
