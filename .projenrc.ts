@@ -34,11 +34,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
     moduleName: 'github.com/parraletz/cdk-vpc-pattern',
   },
 
-  publishToMaven: {
-    mavenGroupId: 'com.github.cloudscouts',
-    mavenArtifactId: 'cdk-vpc-pattern',
-    javaPackage: 'com.github.cloudscouts.cdkvpcpattern',
-  },
+  // publishToMaven: {
+  //   mavenGroupId: 'com.github.cloudscouts',
+  //   mavenArtifactId: 'cdk-vpc-pattern',
+  //   javaPackage: 'com.github.cloudscouts.cdkvpcpattern',
+  // },
 
   // defaultTask: undefined,  /* The default task to execute. */
 
