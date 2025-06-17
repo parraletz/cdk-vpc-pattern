@@ -7,7 +7,6 @@ import { Construct } from "constructs"
  * Properties for creating a VPC pattern.
  *
  * @example
- * ```typescript
  * const vpcProps: VpcProps = {
  *   name: 'my-vpc',
  *   cidr: '10.0.0.0/16',
@@ -18,7 +17,6 @@ import { Construct } from "constructs"
  *   enableKubernenetes: true,
  *   kubernetesClusterName: 'my-eks-cluster'
  * };
- * ```
  */
 export interface VpcProps {
   /** The name of the VPC. */
@@ -44,7 +42,6 @@ export interface VpcProps {
  * Includes NAT Gateways for private subnet internet access and proper tagging for Kubernetes if enabled.
  *
  * @example
- * ```typescript
  * import { App, Stack } from 'aws-cdk-lib';
  * import { VpcPattern } from './vpc-pattern';
  *
@@ -76,7 +73,6 @@ export interface VpcProps {
  * const vpcId = vpc.vpcId;
  * const privateSubnets = vpc.privateSubnets;
  * const publicSubnets = vpc.publicSubnets;
- * ```
  */
 export class VpcPattern extends Construct {
   /** References to the NAT Gateways created in the VPC. */
@@ -85,17 +81,14 @@ export class VpcPattern extends Construct {
   /**
    * The VPC instance.
    * @example
-   * ```typescript
    * // Access the VPC to use in other constructs
    * const myVpc = vpcPattern.vpcId;
-   * ```
    */
   public vpcId: ec2.IVpc
 
   /**
    * The private subnets created in the VPC.
    * @example
-   * ```typescript
    * // Use private subnets for an RDS instance
    * new rds.DatabaseInstance(this, 'Database', {
    *   vpc: vpcPattern.vpcId,
@@ -104,14 +97,12 @@ export class VpcPattern extends Construct {
    *   },
    *   // other properties...
    * });
-   * ```
    */
   public privateSubnets: ec2.ISubnet[] = []
 
   /**
    * The public subnets created in the VPC.
    * @example
-   * ```typescript
    * // Use public subnets for a load balancer
    * new elbv2.ApplicationLoadBalancer(this, 'ALB', {
    *   vpc: vpcPattern.vpcId,
@@ -120,14 +111,12 @@ export class VpcPattern extends Construct {
    *     subnets: vpcPattern.publicSubnets
    *   }
    * });
-   * ```
    */
   public publicSubnets: ec2.ISubnet[] = []
 
   /**
    * The database subnets created in the VPC (if specified).
    * @example
-   * ```typescript
    * // Use database subnets for an RDS instance
    * if (vpcPattern.databaseSubnets.length > 0) {
    *   new rds.DatabaseInstance(this, 'Database', {
@@ -138,7 +127,6 @@ export class VpcPattern extends Construct {
    *     // other properties...
    *   });
    * }
-   * ```
    */
   public databaseSubnets: ec2.ISubnet[] = []
 
@@ -149,7 +137,6 @@ export class VpcPattern extends Construct {
    * @param props The VPC properties.
    *
    * @example
-   * ```typescript
    * // Basic usage
    * const vpc = new VpcPattern(this, 'MyVpc', {
    *   name: 'app-vpc',
@@ -158,7 +145,6 @@ export class VpcPattern extends Construct {
    *   publicSubnets: ['10.0.1.0/24', '10.0.2.0/24'],
    *   privateSubnets: ['10.0.3.0/24', '10.0.4.0/24']
    * });
-   * ```
    */
   constructor(scope: Construct, id: string, props: VpcProps) {
     super(scope, id)

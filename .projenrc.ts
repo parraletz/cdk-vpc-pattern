@@ -1,38 +1,42 @@
-import { awscdk } from 'projen'
-import { NpmAccess } from 'projen/lib/javascript/node-package'
+import { awscdk } from "projen"
+import { NpmAccess } from "projen/lib/javascript/node-package"
 const project = new awscdk.AwsCdkConstructLibrary({
-  author: 'Alex Parra',
-  authorAddress: 'parraletz@gmail.com',
-  cdkVersion: '2.137.0',
-  constructsVersion: '10.3.0',
-  defaultReleaseBranch: 'main',
+  author: "Alex Parra",
+  authorAddress: "parraletz@gmail.com",
+  cdkVersion: "2.137.0",
+  constructsVersion: "10.3.0",
+  defaultReleaseBranch: "main",
   docgen: true,
   eslint: false,
-  jsiiVersion: '~5.4.0',
-  name: 'cdk-vpc-pattern',
+  jsiiVersion: "~5.4.0",
+  name: "cdk-vpc-pattern",
   npmAccess: NpmAccess.PUBLIC,
   projenrcTs: true,
-  repositoryUrl: 'https://github.com/parraletz/cdk-vpc-pattern.git',
-  docgenFilePath: 'docs/API.md',
-  readme: { filename: 'docs/README.md' },
+  repositoryUrl: "https://github.com/parraletz/cdk-vpc-pattern.git",
+  docgenFilePath: "docs/API.md",
+  readme: { filename: "docs/README.md" },
   npmProvenance: false,
-  copyrightOwner: 'Alex Parra',
-  copyrightPeriod: '2024',
-  description: 'A CDK pattern to create a VPC with public and private subnets',
-  packageName: '@cloudscouts/cdk-vpc-pattern',
+  copyrightOwner: "Alex Parra",
+  copyrightPeriod: "2024",
+  description: "A CDK pattern to create a VPC with public and private subnets",
+  packageName: "@cloudscouts/cdk-vpc-pattern",
+  minNodeVersion: "20.18.3",
+  maxNodeVersion: "22.14.0",
 
   publishToPypi: {
-    distName: 'cdk-vpc-pattern',
-    module: 'cdk_vpc_pattern',
+    distName: "cdk-vpc-pattern",
+    module: "cdk_vpc_pattern",
   },
   publishToNuget: {
-    dotNetNamespace: 'CloudScouts.CdkVpcPattern',
-    packageId: 'CloudScoutsCdkVpcPattern',
+    dotNetNamespace: "CloudScouts.CdkVpcPattern",
+    packageId: "CloudScoutsCdkVpcPattern",
   },
 
   publishToGo: {
-    moduleName: 'github.com/parraletz/cdk-vpc-pattern',
+    moduleName: "github.com/parraletz/cdk-vpc-pattern",
   },
+
+  workflowNodeVersion: "22.14.0",
 
   // publishToMaven: {
   //   mavenGroupId: 'com.github.cloudscouts',
@@ -49,6 +53,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
 })
 
 project.tasks
-  .tryFind('release')
-  ?.updateStep(4, { exec: 'git diff --ignore-space-at-eol --exit-code | tee' })
+  .tryFind("release")
+  ?.updateStep(4, { exec: "git diff --ignore-space-at-eol --exit-code | tee" })
 project.synth()
